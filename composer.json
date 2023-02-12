@@ -1,0 +1,28 @@
+{
+    "name": "ajaykushwaha25/custom-make-command",
+    "type": "laravel-package",
+    "description": "A custom Artisan command for creating trait files.",
+    "authors": [
+        {
+            "name": "Ajay Kushwaha",
+            "email": "ajay@ottoedge.com"
+        }
+    ],
+    "require": {
+        "illuminate/support": "5.8.*|^6|^7|^8|^9"
+    },
+    "autoload": {
+        "psr-4": {
+            "AjayKushwaha25\\CustomMakeCommand\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AjayKushwaha25\\CustomMakeCommand\\MakeCommandServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,0 +1,8 @@
+<?php
+
+namespace {{ namespace }};
+
+trait {{ class }}
+{
+    // Add your trait methods here...
+}
