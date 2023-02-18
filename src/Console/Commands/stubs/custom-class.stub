@@ -1,8 +1,8 @@
 <?php
 
-namespace App\{{ namespace }};
+namespace {{ namespace }};
 
-class {{ class_name }}
+class {{ class }}
 {
     // Add your methods here...
 }

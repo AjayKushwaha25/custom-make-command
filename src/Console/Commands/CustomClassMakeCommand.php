@@ -2,17 +2,29 @@
 
 namespace AjayKushwaha25\CustomMakeCommand\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 
-class CustomClassMakeCommand extends Command
+#[AsCommand(name: 'make:class')]
+class CustomClassMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $signature = 'custom:class {name}';
+    protected $name = 'make:class';
+
+    /**
+     * The name of the console command.
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:class';
 
     /**
      * The console command description.
@@ -22,55 +34,44 @@ class CustomClassMakeCommand extends Command
     protected $description = 'Create a new custom class';
 
     /**
-     * The filesystem instance.
+     * The type of class being generated.
      *
-     * @var \Illuminate\Filesystem\Filesystem
+     * @var string
      */
-    protected $files;
+    protected $type = 'Class';
 
     /**
-     * Create a new command instance.
+     * Determine if the class already exists.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @return void
+     * @param  string  $rawName
+     * @return bool
      */
-    public function __construct(Filesystem $files)
+    protected function alreadyExists($rawName)
     {
-        parent::__construct();
-
-        $this->files = $files;
+        return class_exists($rawName) ||
+               $this->files->exists($this->getPath($this->qualifyClass($rawName)));
     }
 
     /**
-     * Execute the console command.
+     * Get the stub file for the generator.
      *
-     * @return void
+     * @return string
      */
-    public function handle()
+    protected function getStub()
     {
-        $name = $this->argument('name');
-        $dirInput = $this->ask('What should be the directory of the class? (This will a folder inside app directory)');
-        $stub = $this->files->get(__DIR__ . '/stubs/custom-class.stub');
+        return $this->resolveStubPath('/stubs/custom-class.stub');
+    }
 
-        // Replace the placeholder with the actual class name and namespace
-        $stub = str_replace('{{ class_name }}', $name, $stub);
-        $stub = str_replace('{{ namespace }}', ucwords($dirInput), $stub);
-
-        // Write the class to a file
-        $dir_path = app_path($dirInput);
-        $file_path = app_path("{$dirInput}/{$name}.php");
-
-        if ($this->files->exists($file_path)) {
-            return $this->error('The class already exists.');
-        }
-
-        if (!$this->files->exists($dir_path)) {
-            $this->files->makeDirectory($dir_path, 0755, true);
-        }
-
-        $this->files->put($file_path, $stub);
-
-        $this->info("The class {$name} has been created successfully at {$file_path}");
-
+    /**
+     * Resolve the fully-qualified path to the stub.
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+                        ? $customPath
+                        : __DIR__.$stub;
     }
 }
