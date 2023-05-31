@@ -1,9 +1,8 @@
 <?php
 
-namespace AjayKushwaha25\CustomMakeCommand\Helpers;
+namespace AjayKushwaha25\CustomMakeCommand\Traits;
 
 use Illuminate\Support\Str;
-// dd('re');
 
 trait UsesUUID
 {
