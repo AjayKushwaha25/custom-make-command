@@ -26,7 +26,9 @@ class MakeCommandServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 \AjayKushwaha25\CustomMakeCommand\Console\Commands\TraitMakeCommand::class,
-                \AjayKushwaha25\CustomMakeCommand\Console\Commands\CustomClassMakeCommand::class
+                \AjayKushwaha25\CustomMakeCommand\Console\Commands\CustomClassMakeCommand::class,
+                \AjayKushwaha25\CustomMakeCommand\Console\Commands\ActionMakeCommand::class,
+                \AjayKushwaha25\CustomMakeCommand\Console\Commands\ServiceMakeCommand::class,
             ]);
         }
     }
