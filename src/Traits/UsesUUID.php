@@ -9,7 +9,7 @@ trait UsesUUID
    /**
      * Boot function from Laravel.
      */
-    protected static function bootUsesUuid()
+    protected static function bootUsesUuid(): void
     {
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
@@ -20,18 +20,16 @@ trait UsesUUID
    /**
      * Get the value indicating whether the IDs are incrementing.
      *
-     * @return bool
      */
-    public function getIncrementing()
+    public function getIncrementing(): bool
     {
         return false;
     }
    /**
      * Get the auto-incrementing key type.
      *
-     * @return string
      */
-    public function getKeyType()
+    public function getKeyType(): string
     {
         return 'string';
     }
